@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User</title>
+</head>
+<body>
+	<h2>
+
+		User Name:<input type="text" id="userName" value="John" /><br />
+		phone:<input type="text" id="phone" value="23826015" /><br /> address:<input
+			type="text" id="address" value="Taipei" /><br /> <input type="hidden"
+			name="mydata" id="mydata" />
+		<button onclick="send()">Send</button>
+        <div id="user">return data</div>
+	</h2>
+	<script>
+     //建立XMLHttpRequest 物件
+      var httpRequest;
+      httpRequest = new XMLHttpRequest();
+      // AJAX callback
+    httpRequest.onreadystatechange = function () {
+       // 等狀態變成請求完成狀態
+      if (httpRequest.readyState === 4) {
+        // 只處理server 返回正常的HTTP 200 狀態
+        if (httpRequest.status == 200) {
+           
+            var jsonResponse = httpRequest.responseText;
+            // 更新頁面內容
+            document.getElementById('user').innerHTML = jsonResponse;
+        } else {
+            alert('ERROR - server status code: ' + httpRequest.status);
+        }
+      }
+    };
+    function send(){
+        
+        var obj={};
+        obj.userName=document.getElementById("userName").value;
+        obj.phone=document.getElementById("phone").value;
+        obj.address=document.getElementById("address").value;
+        var hd=document.getElementById("mydata");
+        hd.value=JSON.stringify(obj);
+        
+        httpRequest.open('POST', 'JSONServlet');
+        // 送出HTTP 請求
+        httpRequest.send(hd.value);
+    }
+</script>
+</body>
+</html>

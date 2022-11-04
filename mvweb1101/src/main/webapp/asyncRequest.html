@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>XML HttpRequest</title>
+</head>
+
+<body>
+    <button onclick="start()">server request</button>
+    <p>
+    <div id="user"></div>
+    <script>
+        // 建立XMLHttpRequest 物件
+        var httpRequest;
+        httpRequest = new XMLHttpRequest();
+        // AJAX callback
+        httpRequest.onreadystatechange = function () {
+            // 等狀態變成請求完成狀態
+            if (httpRequest.readyState === 4) {
+                // 只處理server 返回正常的HTTP 200 狀態
+                if (httpRequest.status == 200) {
+                    // 解開server 返回的JSON 資料格式
+                    var jsonResponse = JSON.parse(httpRequest.responseText);
+                    // 更新頁面內容
+                    document.getElementById('user').innerText = jsonResponse.userName;
+                } else {
+                    alert('ERROR - server status code: ' + httpRequest.status);
+                }
+            }
+        };
+        function start() {
+            // 使用HTTP GET 方法，從URL {username:’Mary’}請求資料
+            httpRequest.open('GET', 'user.txt');
+            // 送出HTTP 請求
+            httpRequest.send();
+        }
+    </script>
+</body>
+
+</html>
