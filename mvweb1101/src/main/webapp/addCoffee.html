@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Add Coffee</title>
+<script src="js/jquery3.6.0.js"></script>
+</head>
+<body>
+	<form>
+		咖啡名稱:<input type="text" name="coffee" value="Extra Espresso" /> <br />
+		售價:<input type="text" name="sale" value="200" /><br /> 總量:<input
+			type="text" name="total" value="10" /><br /> 供應商:<input type="text"
+			name="supplier" value="150" /><br /> 價格:<input type="text"
+			name="price" value="300" /><br /> 
+			<input type="submit" value="Save" />
+			<input type="button" value="coffees" />
+	</form>
+	<div id="mydata"></div>
+    <script>
+        function query(e){
+        	e.preventDefault();
+        	$.get("coffee",display);
+        }
+        function display(data){
+             $("#mydata").html(data);
+        }
+        function send(evt){
+            evt.preventDefault();
+            var frmdata=$("form").serialize();
+            //alert(frmdata);
+            $.post("InsertCoffeeServlet",frmdata,display);
+        }
+        function start(){
+        	$('input[type=submit]').click(send);
+        	$('input[type=button]').click(query);
+        }
+        $(document).ready(start);
+    </script>
+</body>
+</html>
